@@ -2,6 +2,11 @@
 
 A modern, high-performance web-based Super Nintendo (16-bit) and PlayStation 1 (32-bit) emulator built with React 19, TypeScript, Tailwind CSS, and WebAssembly cores (Snes9x & PCSX-ReARMed).
 
+The goal of this project is to stress test the kiro agentic steering tools to determine viability as a professional web development tool.
+
+> [!IMPORTANT]
+> **Legal Notice**: Retro2K is strictly an open-source emulation tool and frontend. It does not distribute, host, or contain any proprietary commercial game ROMs or disc images. Users must provide their own legally acquired backups. All preloaded demo titles are 100% freeware/homebrew games distributed with permission.
+
 ![Retro2K](public/roms/classic_kong.png)
 
 ---
@@ -151,6 +156,17 @@ snes2k/
 │   └── utils/
 │       └── sfx.ts                  # Web Audio synthesized retro sound effects
 ```
+
+---
+
+## ⚖️ Legal Disclaimer & Fair Use
+
+**Retro2K is strictly an emulation tool and frontend.**
+
+- **Tool Only**: Retro2K functions purely as an open-source user interface and WebAssembly runtime player for emulation engines. It does not contain, host, link to, or scrape copyrighted game ROMs, ISOs, BIOS dumps, or proprietary assets.
+- **No Commercial ROMs Distributed**: The developers and contributors do not distribute or promote the distribution of commercial games. The demo games included in this repository (*Classic Kong*, *Uwol: Quest for Money*, *N-Warp Daisakusen*, *Skipp and Friends*) are legitimate, author-permitted homebrew titles distributed under open-source and freeware licenses.
+- **User Responsibility**: Users are solely responsible for ensuring they have the legal right to play any ROMs or disc images they load into Retro2K under the laws of their local jurisdiction (such as creating personal archival backups from physical media they legally own). The creators of Retro2K do not condone or encourage digital piracy or copyright infringement.
+- **Trademarks**: "Super Nintendo Entertainment System" (SNES) and "PlayStation" (PS1), as well as related game titles, trademarks, and logos, are property of their respective owners (Nintendo Co., Ltd., Sony Interactive Entertainment Inc., and their affiliates). Retro2K is an independent open-source project and is in no way affiliated with, authorized, maintained, sponsored, or endorsed by Nintendo, Sony, or any of their subsidiaries.
 
 ---
 
