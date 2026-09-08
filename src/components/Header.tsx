@@ -9,6 +9,7 @@ import {
   Keyboard,
   Disc3,
   LogOut,
+  Smartphone,
 } from 'lucide-react';
 import { EmulatorState, ConsoleSystem } from '../types/emulator';
 import { playButtonChime } from '../utils/sfx';
@@ -19,10 +20,12 @@ interface HeaderProps {
   currentSystem?: ConsoleSystem;
   gamepadName: string | null;
   isFullscreen: boolean;
+  isMobileMode?: boolean;
   onOpenLibrary: () => void;
   onOpenControllerModal: () => void;
   onOpenSettings: () => void;
   onToggleFullscreen: () => void;
+  onToggleMobileMode?: () => void;
   onEjectRom?: () => void;
 }
 
@@ -32,10 +35,12 @@ export const Header: React.FC<HeaderProps> = ({
   currentSystem = 'snes',
   gamepadName,
   isFullscreen,
+  isMobileMode,
   onOpenLibrary,
   onOpenControllerModal,
   onOpenSettings,
   onToggleFullscreen,
+  onToggleMobileMode,
   onEjectRom,
 }) => {
   return (
@@ -174,6 +179,25 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <Sliders className="w-4 h-4" />
         </button>
+
+        {/* Mobile Mode toggle */}
+        {onToggleMobileMode && (
+          <button
+            onClick={() => {
+              playButtonChime();
+              onToggleMobileMode();
+            }}
+            className={`p-2 rounded-xl border transition-all active:scale-95 ${
+              isMobileMode
+                ? 'bg-indigo-600/30 border-indigo-500/50 text-indigo-300'
+                : 'bg-neutral-800/80 hover:bg-neutral-700 border-neutral-700/80 text-neutral-300 hover:text-white'
+            }`}
+            title={isMobileMode ? 'Switch to Desktop Mode' : 'Switch to Mobile Browser Mode'}
+            aria-label="Mobile Mode"
+          >
+            <Smartphone className="w-4 h-4" />
+          </button>
+        )}
 
         {/* Fullscreen toggle button */}
         <button

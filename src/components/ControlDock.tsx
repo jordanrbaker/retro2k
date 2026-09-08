@@ -35,6 +35,8 @@ interface ControlDockProps {
   onToggleTouchGamepad: () => void;
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
+  isMobileMode?: boolean;
+  onToggleMobileMode?: () => void;
   onEjectRom?: () => void;
   currentScreenSize?: ScreenSize;
   onToggleScreenSize?: () => void;
@@ -56,6 +58,8 @@ export const ControlDock: React.FC<ControlDockProps> = ({
   onToggleTouchGamepad,
   isFullscreen,
   onToggleFullscreen,
+  isMobileMode,
+  onToggleMobileMode,
   onEjectRom,
   currentScreenSize,
   onToggleScreenSize,
@@ -282,6 +286,24 @@ export const ControlDock: React.FC<ControlDockProps> = ({
         >
           <Smartphone className="w-4 h-4" />
         </button>
+
+        {/* Mobile Browser Mode Toggle */}
+        {onToggleMobileMode && (
+          <button
+            onClick={() => {
+              playButtonChime();
+              onToggleMobileMode();
+            }}
+            className={`p-2.5 rounded-xl transition-all ${
+              isMobileMode
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
+            }`}
+            title="Switch to Mobile Browser Mode"
+          >
+            <Smartphone className="w-4 h-4 text-emerald-400" />
+          </button>
+        )}
 
         {/* Controller Visualizer & Mapper Modal */}
         <button

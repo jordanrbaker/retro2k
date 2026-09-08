@@ -422,6 +422,13 @@ export class EmulatorManager {
       return null;
     }
   }
+
+  public attachCanvasToContainer(newContainer: HTMLElement | null): void {
+    if (!newContainer || !this.canvasElement) return;
+    if (this.canvasElement.parentElement !== newContainer) {
+      newContainer.appendChild(this.canvasElement);
+    }
+  }
 }
 
 export const emulator = EmulatorManager.getInstance();

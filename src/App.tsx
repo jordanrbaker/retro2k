@@ -8,6 +8,7 @@ import { SaveStateManager } from './components/SaveStateManager';
 import { RomLibraryModal } from './components/RomLibraryModal';
 import { SettingsModal } from './components/SettingsModal';
 import { TouchGamepad } from './components/TouchGamepad';
+import { MobileStage } from './components/MobileStage';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { emulator } from './services/emulator';
 import { gamepadManager } from './services/gamepad';
@@ -47,7 +48,18 @@ import {
 } from './utils/sfx';
 
 export default function App() {
-  const canvasContainerRef = useRef<HTMLDivElement | null>(null);
+  const desktopCanvasContainerRef = useRef<HTMLDivElement | null>(null);
+  const mobileCanvasContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Mobile Browser Mode state (auto-detect on small touch screens or persisted choice)
+  const [isMobileMode, setIsMobileMode] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const stored = localStorage.getItem('retro2k_mobile_mode');
+    if (stored !== null) return stored === 'true';
+    const isTouch = 'ontouchstart' in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+    const isNarrow = window.innerWidth <= 768;
+    return Boolean(isTouch && isNarrow);
+  });
 
   // Core State
   const [emulatorState, setEmulatorState] = useState<EmulatorState>('idle');
@@ -206,47 +218,70 @@ export default function App() {
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
-  // Quick Save & Load Hotkeys (F2 / F4)
-  useEffect(() => {
-    const handleQuickSave = async () => {
-      if (!currentRom || emulatorState !== 'running') return;
-      try {
-        const result = await emulator.saveState();
-        playSaveStateSound();
-
-        const stateInfo: SaveStateInfo = {
-          slot: 1,
-          romId: currentRom.id,
-          timestamp: Date.now(),
-          thumbnailUrl: result.thumbnail,
-          stateBlob: result.state,
-        };
-
-        await saveStateToDb(stateInfo);
-        addToast('Quick Save (F2)', 'State saved to Slot 1', 'success');
-      } catch (err: any) {
-        console.error('Quick save error:', err);
-        addToast('Quick Save Failed', err?.message, 'warning');
-      }
-    };
-
-    const handleQuickLoad = async () => {
-      if (!currentRom) return;
-      try {
-        const saved = await getStateFromDb(currentRom.id, 1);
-        if (!saved || !saved.stateBlob) {
-          addToast('Quick Load', 'No save state found in Slot 1.', 'warning');
-          return;
+  // Toggle Mobile Mode handler
+  const handleToggleMobileMode = () => {
+    setIsMobileMode((prev) => {
+      const next = !prev;
+      localStorage.setItem('retro2k_mobile_mode', String(next));
+      addToast(
+        'Display Mode',
+        next ? 'Switched to Mobile Browser Mode' : 'Switched to Desktop Mode',
+        'info'
+      );
+      // Transfer running canvas if game is active
+      setTimeout(() => {
+        const nextContainer = next
+          ? mobileCanvasContainerRef.current
+          : desktopCanvasContainerRef.current;
+        if (nextContainer) {
+          emulator.attachCanvasToContainer(nextContainer);
         }
-        await emulator.loadState(saved.stateBlob);
-        playLoadStateSound();
-        addToast('Quick Load (F4)', 'Restored state from Slot 1', 'success');
-      } catch (err: any) {
-        console.error('Quick load error:', err);
-        addToast('Quick Load Failed', err?.message, 'warning');
-      }
-    };
+      }, 60);
+      return next;
+    });
+  };
 
+  // Quick Save & Load Hotkeys (F2 / F4)
+  const handleQuickSave = async () => {
+    if (!currentRom || emulatorState !== 'running') return;
+    try {
+      const result = await emulator.saveState();
+      playSaveStateSound();
+
+      const stateInfo: SaveStateInfo = {
+        slot: 1,
+        romId: currentRom.id,
+        timestamp: Date.now(),
+        thumbnailUrl: result.thumbnail,
+        stateBlob: result.state,
+      };
+
+      await saveStateToDb(stateInfo);
+      addToast('Quick Save', 'State saved to Slot 1', 'success');
+    } catch (err: any) {
+      console.error('Quick save error:', err);
+      addToast('Quick Save Failed', err?.message, 'warning');
+    }
+  };
+
+  const handleQuickLoad = async () => {
+    if (!currentRom) return;
+    try {
+      const saved = await getStateFromDb(currentRom.id, 1);
+      if (!saved || !saved.stateBlob) {
+        addToast('Quick Load', 'No save state found in Slot 1.', 'warning');
+        return;
+      }
+      await emulator.loadState(saved.stateBlob);
+      playLoadStateSound();
+      addToast('Quick Load', 'Restored state from Slot 1', 'success');
+    } catch (err: any) {
+      console.error('Quick load error:', err);
+      addToast('Quick Load Failed', err?.message, 'warning');
+    }
+  };
+
+  useEffect(() => {
     window.addEventListener('snes2k-quick-save', handleQuickSave);
     window.addEventListener('snes2k-quick-load', handleQuickLoad);
     window.addEventListener('retro2k-quick-save', handleQuickSave);
@@ -262,7 +297,10 @@ export default function App() {
 
   // Launch ROM handler
   const handleSelectRom = async (rom: RomItem) => {
-    if (!canvasContainerRef.current) return;
+    const activeContainer = isMobileMode
+      ? mobileCanvasContainerRef.current
+      : desktopCanvasContainerRef.current;
+    if (!activeContainer) return;
     try {
       setCurrentRom(rom);
       setLastPlayedRom(rom);
@@ -282,7 +320,7 @@ export default function App() {
         romId: rom.id,
         romTitle: rom.title,
         system: rom.system || 'snes',
-        container: canvasContainerRef.current,
+        container: activeContainer,
         sram: savedSram,
         filter: videoSettings.filter,
       });
@@ -466,6 +504,64 @@ export default function App() {
     });
   };
 
+  // Mobile Browser Mode Render
+  if (isMobileMode) {
+    return (
+      <div className="w-full h-[100dvh] bg-neutral-950 text-neutral-100 overflow-hidden select-none">
+        <MobileStage
+          canvasContainerRef={mobileCanvasContainerRef}
+          emulatorState={emulatorState}
+          videoSettings={videoSettings}
+          audioSettings={audioSettings}
+          currentRom={currentRom}
+          lastPlayedRom={lastPlayedRom}
+          isFastForwarding={isFastForwarding}
+          isFullscreen={isFullscreen}
+          onSelectRom={handleSelectRom}
+          onUploadFiles={handleUploadFiles}
+          onUploadFolder={handleUploadFolder}
+          onTogglePlayPause={() => emulator.togglePause()}
+          onToggleFastForward={() => {
+            emulator.toggleFastForward();
+            setIsFastForwarding((prev) => !prev);
+          }}
+          onReset={() => emulator.restart()}
+          onQuickSave={handleQuickSave}
+          onQuickLoad={handleQuickLoad}
+          onToggleMute={() => {
+            handleUpdateAudioSettings({ muted: !audioSettings.muted });
+          }}
+          onToggleFullscreen={handleToggleFullscreen}
+          onEjectRom={handleEjectGame}
+          onSwitchToDesktopMode={handleToggleMobileMode}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+        />
+
+        {/* Settings Modal */}
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          videoSettings={videoSettings}
+          onUpdateVideoSettings={handleUpdateVideoSettings}
+          audioSettings={audioSettings}
+          onUpdateAudioSettings={handleUpdateAudioSettings}
+        />
+
+        {/* Save State Manager Modal */}
+        <SaveStateManager
+          isOpen={isSaveStatesOpen}
+          onClose={() => setIsSaveStatesOpen(false)}
+          romId={currentRom?.id || ''}
+          romTitle={currentRom?.title || ''}
+          onNotify={addToast}
+        />
+
+        {/* Toast Notification Stack */}
+        <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col justify-between overflow-x-hidden">
       {/* Top Header */}
@@ -475,17 +571,19 @@ export default function App() {
         currentSystem={currentRom?.system || 'snes'}
         gamepadName={gamepadName}
         isFullscreen={isFullscreen}
+        isMobileMode={isMobileMode}
         onOpenLibrary={() => setIsLibraryOpen(true)}
         onOpenControllerModal={() => setIsControllerModalOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
         onToggleFullscreen={handleToggleFullscreen}
+        onToggleMobileMode={handleToggleMobileMode}
         onEjectRom={currentRom ? handleEjectGame : undefined}
       />
 
       {/* Main Emulation Stage */}
       <main className="flex-1 flex flex-col justify-center items-center relative my-auto w-full">
         <EmulatorStage
-          canvasContainerRef={canvasContainerRef}
+          canvasContainerRef={desktopCanvasContainerRef}
           emulatorState={emulatorState}
           videoSettings={videoSettings}
           currentRomTitle={currentRom?.title || ''}
@@ -521,6 +619,8 @@ export default function App() {
         onToggleTouchGamepad={() => setIsTouchGamepadVisible((prev) => !prev)}
         isFullscreen={isFullscreen}
         onToggleFullscreen={handleToggleFullscreen}
+        isMobileMode={isMobileMode}
+        onToggleMobileMode={handleToggleMobileMode}
         onEjectRom={currentRom ? handleEjectGame : undefined}
         currentScreenSize={videoSettings.screenSize}
         onToggleScreenSize={handleToggleScreenSize}

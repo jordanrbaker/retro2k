@@ -55,8 +55,11 @@ The goal of this project is to stress test the kiro agentic steering tools to de
   - *N-Warp Daisakusen* (d4s) — legendary SNES multiplayer party brawler.
   - *Skipp and Friends* (Mukunda Johnson) — multi-character puzzle adventure.
 
-- 📱 **Mobile & Tablet Virtual Touch Gamepad**:
-  - Translucent on-screen touch controls with multi-touch pointer tracking and haptic vibration.
+- 📱 **Special Mobile Browser Mode**:
+  - **Portrait Handheld Console**: Retro display positioned in top half with zero thumb obstruction, paired with a tactile bottom gamepad plate, quick action ribbon (Save/Load/Pause/FF/Mute), and 8-way continuous drag D-Pad.
+  - **Landscape Ultra-Wide**: Maximized full-height 100dvh gameplay with ergonomic translucent thumb overlays and auto-dimming tools pill.
+  - **Mobile Game Launcher**: Touch-optimized games catalog with cover art, system tabs, search, and instant launch.
+  - **Haptic Vibration & Combo Buttons**: Multi-touch support with dedicated Y+B Run/Jump combo hotspot and tactile feedback.
 
 ---
 

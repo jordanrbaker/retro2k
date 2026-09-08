@@ -70,3 +70,45 @@
 .animate-pulse-glow {
   animation: controller-pulse 0.25s ease-out;
 }
+
+/* Mobile Browser Mode & Touch Optimization */
+html, body {
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-mode-active {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
+}
+
+.safe-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.safe-left {
+  padding-left: max(0.5rem, env(safe-area-inset-left));
+}
+
+.safe-right {
+  padding-right: max(0.5rem, env(safe-area-inset-right));
+}
+
+/* Tactile Button Press Styles */
+.touch-btn {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.touch-btn:active, .touch-btn-active {
+  transform: scale(0.92);
+  filter: brightness(1.2);
+}

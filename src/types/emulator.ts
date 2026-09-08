@@ -24,6 +24,14 @@ export type EmulatorState = 'idle' | 'loading' | 'running' | 'paused' | 'error';
 
 export type AspectRatio = '4:3' | '8:7' | 'stretch';
 export type ScreenSize = 'standard' | 'large' | 'cinema';
+export type MobileOrientation = 'portrait' | 'landscape';
+
+export interface MobileSettings {
+  haptics: boolean;
+  dpadType: 'dpad' | 'analog';
+  opacity: number; // 0.2 to 1.0
+  vibrateDuration: number;
+}
 
 export interface VideoSettings {
   scanlines: boolean;
