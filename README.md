@@ -1,19 +1,19 @@
 # Retro2K — Modern Browser-Based SNES & PS1 Retro Emulator
 
-A modern, high-performance web-based Super Nintendo (16-bit) and PlayStation 1 (32-bit) emulator built with React 19, TypeScript, Tailwind CSS, and WebAssembly cores (Snes9x & PCSX-ReARMed).
+A modern, high-performance web-based Super Nintendo (16-bit) and PlayStation 1 (32-bit) emulator built with React 19, TypeScript, Tailwind CSS, and WebAssembly cores (Snes9x & PCSX-ReARMed). Built as a proof-of-concept project with my daughter to showcase how to leverage agentic development workflows to solve real-world wants and needs.
 
 The goal of this project is to stress test the kiro agentic steering tools to determine viability as a professional web development tool.
 
 > [!IMPORTANT]
 > **Legal Notice**: Retro2K is strictly an open-source emulation tool and frontend. It does not distribute, host, or contain any proprietary commercial game ROMs or disc images. Users must provide their own legally acquired backups. All preloaded demo titles are 100% freeware/homebrew games distributed with permission.
 
-![Retro2K](public/roms/classic_kong.png)
+![Retro2K](docs/screenshots/main_stage.png)
 
 ---
 
-## ✨ Highlights & Features
+## Highlights & Features
 
-- 🎮 **Full Controller Support**:
+- **Full Controller Support**:
   - Direct HTML5 Gamepad API integration for USB & Bluetooth controllers (Xbox Wireless Controller, PlayStation DualSense / DualShock, 8BitDo SN30, Nintendo Switch Pro Controller, and generic DirectInput/XInput pads).
   - **Interactive SVG SNES Controller Visualizer**: Authentic retro gamepad that lights up in real time with glowing neon buttons and an analog thumbstick indicator as you press physical buttons!
   - **Custom Button Remapping**: Rebind any physical controller button or keyboard key directly from the visual gamepad.
@@ -21,49 +21,49 @@ The goal of this project is to stress test the kiro agentic steering tools to de
   - **Haptic Rumble & Vibration**: Test and feel dual-motor force feedback directly from the browser.
   - **Adjustable Thumbstick Deadzones**: Prevent drifting on older analog sticks.
 
-- 📺 **Modern Retro UI & CRT Shaders**:
+- **Modern Retro UI & CRT Shaders**:
   - Sleek glassmorphic dark theme styled with the iconic Super Famicom 4-color diamond gem (Red, Yellow, Blue, Green) or US SNES Lavender/Purple.
   - Authentic hardware-accelerated **CRT scanlines filter** with adjustable opacity slider.
   - Curved CRT vignette, corner tube distortion, and phosphor glow effects.
   - Multiple aspect ratio modes: **4:3 (Authentic CRT TV)**, **8:7 (Pixel-Perfect 1:1 PAR)**, and **Stretch**.
   - Crisp Nearest-Neighbor pixel art scaling vs Smooth Bilinear filtering.
 
-- 💾 **10-Slot Visual Save State Manager**:
+- **10-Slot Visual Save State Manager**:
   - Instant save states captured with automatic visual screenshot thumbnails.
   - Quick Save with <kbd>F2</kbd> and Quick Load with <kbd>F4</kbd>.
   - Export `.state` files to your computer or import external save files.
   - Persistent save states stored in client-side **IndexedDB**.
 
-- 🔍 **Flexible Viewing Screen Sizes (Larger Screen Options)**:
+- **Flexible Viewing Screen Sizes (Larger Screen Options)**:
   - **Standard (Classic)**: `max-w-4xl max-h-[76vh]` — centered framed viewing area.
   - **Large (Spacious 1.5x - Default)**: `max-w-6xl max-h-[88vh]` — substantial, cinematic display filling modern desktop monitors.
   - **Cinema (Max Full Stage)**: `max-w-[96vw] max-h-[92vh]` — near edge-to-edge viewing experience while preserving retro CRT shaders and pixel aspect ratios.
   - Quick cycle button on the bottom **Control Dock** (`1x` / `1.5x` / `MAX`), top-right bezel overlay, or in **Settings**.
 
-- ⏏️ **Authentic "Eject Cartridge" System**:
+- **Authentic "Eject Cartridge" System**:
   - Dedicated **Eject Button** in the top header, floating dock, and TV bezel overlay.
   - Gracefully terminates the running emulation, plays an authentic mechanical spring eject sound effect (`playEjectSound()`), and returns to the home library menu.
 
-- 🕹️ **Drag-and-Drop ROM Loader & Local Library**:
+- **Drag-and-Drop ROM Loader & Local Library**:
   - Drag and drop any `.smc`, `.sfc`, `.fig`, or `.zip` file directly onto the screen to play immediately.
   - Automatic SNES header inspection (Internal title, LoROM / HiROM mode, cartridge country, and checksum verification).
   - Saved custom ROM shelf backed by IndexedDB for offline play.
 
-- 👾 **Preloaded Homebrew Classics**:
+- **Preloaded Homebrew Classics**:
   - *Classic Kong Complete* (Shiru & BubbleZap Games) — 16-bit arcade Donkey Kong remake.
   - *Uwol: Quest for Money* (The Mojon Twins) — fast-paced action pyramid platformer.
   - *N-Warp Daisakusen* (d4s) — legendary SNES multiplayer party brawler.
   - *Skipp and Friends* (Mukunda Johnson) — multi-character puzzle adventure.
 
-- 📱 **Special Mobile Browser Mode**:
+- **Special Mobile Browser Mode**:
   - **Portrait Handheld Console**: Retro display positioned in top half with zero thumb obstruction, paired with a tactile bottom gamepad plate, quick action ribbon (Save/Load/Pause/FF/Mute), and 8-way continuous drag D-Pad.
-  - **Landscape Ultra-Wide**: Maximized full-height 100dvh gameplay with ergonomic translucent thumb overlays and auto-dimming tools pill.
+  - **Landscape Ultra-Wide**: Maximized full-height 100dvh gameplay with ergonomic translucent thumb overlays, docked bottom Start/Select pills, and bottom-right quick tools menu.
   - **Mobile Game Launcher**: Touch-optimized games catalog with cover art, system tabs, search, and instant launch.
   - **Haptic Vibration & Combo Buttons**: Multi-touch support with dedicated Y+B Run/Jump combo hotspot and tactile feedback.
 
 ---
 
-## ⌨️ Controls & Default Key Mappings
+## Controls & Default Key Mappings
 
 ### Gamepad Controls (Nintendo Layout)
 | SNES Button | Xbox / PS Controller | Nintendo / 8BitDo Controller |
@@ -99,7 +99,7 @@ The goal of this project is to stress test the kiro agentic steering tools to de
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v18 or higher recommended)
@@ -108,8 +108,8 @@ The goal of this project is to stress test the kiro agentic steering tools to de
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/snes2k.git
-cd snes2k
+git clone https://github.com/jordanrbaker/retro2k.git
+cd retro2k
 
 # Install dependencies
 npm install
@@ -129,12 +129,14 @@ npm run preview
 
 ---
 
-## 🛠️ Architecture
+## Architecture
 
 ```
-snes2k/
+retro2k/
 ├── public/
 │   └── roms/               # Bundled homebrew ROMs and artwork
+├── docs/
+│   └── screenshots/        # Interface screenshots and previews
 ├── src/
 │   ├── components/
 │   │   ├── Header.tsx               # Top glassmorphic bar & status indicator
@@ -145,13 +147,15 @@ snes2k/
 │   │   ├── RomLibraryModal.tsx     # Game catalogue & ROM upload manager
 │   │   ├── TouchGamepad.tsx        # Virtual on-screen touch controls
 │   │   ├── SettingsModal.tsx        # Video CRT shader, audio & hotkey settings
+│   │   ├── MobileStage.tsx          # Mobile mode stage and landscape tools
+│   │   ├── MobileController.tsx     # Mobile touch gamepad overlay
 │   │   └── Toast.tsx               # Notification toast system
 │   ├── services/
-│   │   ├── emulator.ts              # Nostalgist / Snes9x WebAssembly lifecycle
+│   │   ├── emulator.ts              # Nostalgist / Snes9x / PCSX-ReARMed lifecycle
 │   │   ├── gamepad.ts               # HTML5 Gamepad loop, rumble, and mappings
 │   │   ├── keyboard.ts              # Keyboard mapping & hotkey system
 │   │   ├── romStorage.ts            # IndexedDB ROM & save state storage
-│   │   └── snesHeader.ts            # SNES binary header parser & diagnostics
+│   │   └── discHeader.ts            # SNES & PS1 binary header parser & diagnostics
 │   ├── data/
 │   │   └── curatedRoms.ts          # Showcase homebrew game catalog
 │   ├── types/
@@ -162,7 +166,7 @@ snes2k/
 
 ---
 
-## ⚖️ Legal Disclaimer & Fair Use
+## Legal Disclaimer & Fair Use
 
 **Retro2K is strictly an emulation tool and frontend.**
 
@@ -173,6 +177,32 @@ snes2k/
 
 ---
 
-## 📄 License
-MIT License.
+## Screenshots
+
+### Main Emulation Stage
+![Main Stage](docs/screenshots/main_stage.png)
+
+### Retro Games Library & Custom ROM Shelf
+![Games Library](docs/screenshots/rom_library.png)
+
+### Interactive Controller Visualizer & Key Remapping
+![Controller Visualizer](docs/screenshots/controller_visualizer.png)
+
+### Video & CRT Shaders Settings
+![Settings Modal](docs/screenshots/settings_modal.png)
+
+### 10-Slot Visual Save State Manager
+![Save State Manager](docs/screenshots/save_states.png)
+
+### Mobile Browser Mode (Landscape & Portrait)
+| Mobile Landscape Controls | Mobile Handheld Console Portrait |
+| :---: | :---: |
+| ![Mobile Landscape](docs/screenshots/mobile_landscape.png) | ![Mobile Portrait](docs/screenshots/mobile_portrait.png) |
+
+---
+
+## License
+
+[MIT License](LICENSE.md)
+
 Homebrew games included are copyright their respective authors and distributed legally under open/freeware licenses.
