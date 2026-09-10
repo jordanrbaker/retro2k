@@ -81,7 +81,7 @@ export const MobileStage: React.FC<MobileStageProps> = ({
 }) => {
   // Orientation detection
   const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
-  const [showLandscapeToolbar, setShowLandscapeToolbar] = useState(true);
+  const [showLandscapeToolbar, setShowLandscapeToolbar] = useState(false);
 
   // Mobile Game Library State (for Idle screen)
   const [allGames, setAllGames] = useState<RomItem[]>(CURATED_ROMS);
@@ -385,70 +385,112 @@ export const MobileStage: React.FC<MobileStageProps> = ({
               )}
             </div>
 
-            {/* Top Minimal Toolbar Pill (Auto-collapsible) */}
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 z-40 pointer-events-auto flex flex-col items-center">
+            {/* Bottom-Right Tools Menu Icon Button & Flyout */}
+            <div
+              className="absolute right-2 safe-right z-40 pointer-events-auto flex flex-col items-end gap-1.5"
+              style={{ bottom: 'max(6px, env(safe-area-inset-bottom, 0px))' }}
+            >
               {showLandscapeToolbar ? (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900/80 backdrop-blur-md border border-neutral-700/70 shadow-2xl animate-in fade-in">
+                <>
+                  <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-neutral-900/95 backdrop-blur-xl border border-neutral-700/80 shadow-2xl animate-in fade-in slide-in-from-bottom-2">
+                    <button
+                      onClick={() => {
+                        playButtonChime();
+                        onTogglePlayPause();
+                      }}
+                      className="p-2 rounded-xl hover:bg-neutral-800 text-neutral-300 hover:text-white transition-colors"
+                      title={isRunning ? 'Pause' : 'Resume'}
+                    >
+                      {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+                    </button>
+                    <button
+                      onClick={() => {
+                        playButtonChime();
+                        onToggleFastForward();
+                      }}
+                      className={`p-2 rounded-xl transition-colors ${
+                        isFastForwarding ? 'bg-indigo-600 text-white' : 'text-neutral-400 hover:text-white'
+                      }`}
+                      title="Fast Forward 3x"
+                    >
+                      <FastForward className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        playButtonChime();
+                        onQuickSave();
+                      }}
+                      className="px-2.5 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-indigo-300 text-[10px] font-bold"
+                    >
+                      SAVE
+                    </button>
+                    <button
+                      onClick={() => {
+                        playButtonChime();
+                        onQuickLoad();
+                      }}
+                      className="px-2.5 py-1.5 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-amber-300 text-[10px] font-bold"
+                    >
+                      LOAD
+                    </button>
+                    <button
+                      onClick={() => {
+                        playButtonChime();
+                        onToggleFullscreen();
+                      }}
+                      className="p-2 rounded-xl hover:bg-neutral-800 text-neutral-400 hover:text-white"
+                      title="Fullscreen"
+                    >
+                      {isFullscreen ? <Minimize className="w-3.5 h-3.5" /> : <Maximize className="w-3.5 h-3.5" />}
+                    </button>
+                    <button
+                      onClick={() => {
+                        playButtonChime();
+                        onEjectRom();
+                      }}
+                      className="px-2.5 py-1.5 rounded-xl bg-rose-950/80 hover:bg-rose-900 text-rose-300 text-[10px] font-bold border border-rose-500/30"
+                    >
+                      MENU
+                    </button>
+                    <button
+                      onClick={() => {
+                        playButtonChime();
+                        onSwitchToDesktopMode();
+                      }}
+                      className="p-2 rounded-xl hover:bg-neutral-800 text-neutral-400 hover:text-white"
+                      title="Desktop Mode"
+                    >
+                      <Monitor className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => setShowLandscapeToolbar(false)}
+                      className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800"
+                      title="Close Toolbar"
+                    >
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                   <button
-                    onClick={onTogglePlayPause}
-                    className="p-1.5 rounded-full hover:bg-neutral-800 text-neutral-300 hover:text-white"
+                    onClick={() => {
+                      playButtonChime();
+                      setShowLandscapeToolbar(false);
+                    }}
+                    className="w-8 h-8 rounded-xl bg-indigo-600 border border-indigo-400 text-white flex items-center justify-center shadow-2xl transition-all active:scale-95"
+                    title="Close Tools Menu"
                   >
-                    {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+                    <Sliders className="w-4 h-4 text-white" />
                   </button>
-                  <button
-                    onClick={onToggleFastForward}
-                    className={`p-1.5 rounded-full ${
-                      isFastForwarding ? 'bg-indigo-600 text-white' : 'text-neutral-400 hover:text-white'
-                    }`}
-                  >
-                    <FastForward className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={onQuickSave}
-                    className="px-2 py-0.5 rounded-full bg-neutral-800 text-indigo-300 text-[10px] font-bold"
-                  >
-                    SAVE
-                  </button>
-                  <button
-                    onClick={onQuickLoad}
-                    className="px-2 py-0.5 rounded-full bg-neutral-800 text-amber-300 text-[10px] font-bold"
-                  >
-                    LOAD
-                  </button>
-                  <button
-                    onClick={onToggleFullscreen}
-                    className="p-1.5 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white"
-                  >
-                    {isFullscreen ? <Minimize className="w-3.5 h-3.5" /> : <Maximize className="w-3.5 h-3.5" />}
-                  </button>
-                  <button
-                    onClick={onEjectRom}
-                    className="px-2 py-0.5 rounded-full bg-rose-950/70 text-rose-300 text-[10px] font-bold border border-rose-500/30"
-                  >
-                    MENU
-                  </button>
-                  <button
-                    onClick={onSwitchToDesktopMode}
-                    className="p-1.5 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white"
-                    title="Desktop Mode"
-                  >
-                    <Monitor className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => setShowLandscapeToolbar(false)}
-                    className="p-1 rounded-full text-neutral-500 hover:text-white"
-                    title="Hide Toolbar"
-                  >
-                    <ChevronUp className="w-3 h-3" />
-                  </button>
-                </div>
+                </>
               ) : (
                 <button
-                  onClick={() => setShowLandscapeToolbar(true)}
-                  className="px-3 py-1 rounded-full bg-neutral-900/60 backdrop-blur-sm border border-neutral-700/50 text-neutral-400 hover:text-white text-[10px] font-bold flex items-center gap-1 shadow-lg"
+                  onClick={() => {
+                    playButtonChime();
+                    setShowLandscapeToolbar(true);
+                  }}
+                  className="w-8 h-8 rounded-xl bg-neutral-900/90 backdrop-blur-md border border-neutral-700/80 text-neutral-300 hover:text-white flex items-center justify-center shadow-2xl transition-all active:scale-95"
+                  title="Tools Menu"
                 >
-                  <ChevronDown className="w-3 h-3" />
-                  <span>TOOLS</span>
+                  <Sliders className="w-4 h-4 text-indigo-400" />
                 </button>
               )}
             </div>

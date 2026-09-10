@@ -218,9 +218,12 @@ export const MobileController: React.FC<MobileControllerProps> = ({
       className={`select-none touch-none ${
         isPortrait
           ? 'w-full flex-1 flex flex-col justify-between px-3 py-2 bg-gradient-to-b from-neutral-900/95 to-neutral-950/95 border-t border-neutral-800'
-          : 'fixed inset-0 pointer-events-none z-30 flex flex-col justify-between p-3 safe-bottom safe-left safe-right'
+          : 'fixed inset-0 pointer-events-none z-30 flex flex-col justify-between p-2 pb-0 safe-left safe-right'
       }`}
-      style={{ opacity }}
+      style={{
+        opacity,
+        paddingBottom: isPortrait ? undefined : 'max(4px, env(safe-area-inset-bottom, 0px))',
+      }}
     >
       {/* Top Shoulder Triggers (L1 / R1, L2 / R2) */}
       <div
@@ -321,122 +324,139 @@ export const MobileController: React.FC<MobileControllerProps> = ({
 
       {/* Main Controls Row: Continuous Drag D-Pad & 4-Action Diamond */}
       <div
-        className={`flex justify-between items-center w-full pointer-events-auto ${
-          isPortrait ? 'py-3' : 'pb-6 px-2'
+        className={`flex justify-between items-end w-full pointer-events-auto ${
+          isPortrait ? 'py-3' : 'pb-0 px-1'
         }`}
       >
-        {/* Continuous Drag D-Pad */}
-        <div
-          ref={dpadRef}
-          onPointerDown={handleDpadPointerDown}
-          onPointerMove={handleDpadPointerMove}
-          onPointerUp={handleDpadPointerUp}
-          onPointerCancel={handleDpadPointerUp}
-          className="relative w-36 h-36 touch-none flex items-center justify-center cursor-pointer select-none"
-        >
-          {/* Subtle Outer Boundary Ring */}
-          <div className="absolute inset-0 rounded-full bg-neutral-950/40 border border-neutral-800/60 shadow-2xl" />
-
-          {/* D-Pad Cross Horizontal Bar */}
-          <div className="absolute w-36 h-12 rounded-xl bg-neutral-900 border border-neutral-700/80 shadow-lg" />
-          {/* D-Pad Cross Vertical Bar */}
-          <div className="absolute h-36 w-12 rounded-xl bg-neutral-900 border border-neutral-700/80 shadow-lg" />
-
-          {/* Directional Wings with Active Feedback Glow */}
-          {/* UP Wing */}
+        {/* Left Side: D-Pad and in Landscape: SELECT pill beside D-Pad at bottom */}
+        <div className="flex items-end gap-2 pointer-events-auto">
+          {/* Continuous Drag D-Pad */}
           <div
-            className={`absolute top-0 w-12 h-12 rounded-t-xl flex items-center justify-center transition-colors ${
-              activeDpad.up ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
-            }`}
+            ref={dpadRef}
+            onPointerDown={handleDpadPointerDown}
+            onPointerMove={handleDpadPointerMove}
+            onPointerUp={handleDpadPointerUp}
+            onPointerCancel={handleDpadPointerUp}
+            className="relative w-36 h-36 touch-none flex items-center justify-center cursor-pointer select-none"
           >
-            <span
-              className={`text-sm font-black transition-colors ${
-                activeDpad.up ? 'text-white' : 'text-neutral-500'
+            {/* Subtle Outer Boundary Ring */}
+            <div className="absolute inset-0 rounded-full bg-neutral-950/40 border border-neutral-800/60 shadow-2xl" />
+
+            {/* D-Pad Cross Horizontal Bar */}
+            <div className="absolute w-36 h-12 rounded-xl bg-neutral-900 border border-neutral-700/80 shadow-lg" />
+            {/* D-Pad Cross Vertical Bar */}
+            <div className="absolute h-36 w-12 rounded-xl bg-neutral-900 border border-neutral-700/80 shadow-lg" />
+
+            {/* Directional Wings with Active Feedback Glow */}
+            {/* UP Wing */}
+            <div
+              className={`absolute top-0 w-12 h-12 rounded-t-xl flex items-center justify-center transition-colors ${
+                activeDpad.up ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
               }`}
             >
-              ▲
-            </span>
-          </div>
+              <span
+                className={`text-sm font-black transition-colors ${
+                  activeDpad.up ? 'text-white' : 'text-neutral-500'
+                }`}
+              >
+                ▲
+              </span>
+            </div>
 
-          {/* DOWN Wing */}
-          <div
-            className={`absolute bottom-0 w-12 h-12 rounded-b-xl flex items-center justify-center transition-colors ${
-              activeDpad.down ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
-            }`}
-          >
-            <span
-              className={`text-sm font-black transition-colors ${
-                activeDpad.down ? 'text-white' : 'text-neutral-500'
+            {/* DOWN Wing */}
+            <div
+              className={`absolute bottom-0 w-12 h-12 rounded-b-xl flex items-center justify-center transition-colors ${
+                activeDpad.down ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
               }`}
             >
-              ▼
-            </span>
-          </div>
+              <span
+                className={`text-sm font-black transition-colors ${
+                  activeDpad.down ? 'text-white' : 'text-neutral-500'
+                }`}
+              >
+                ▼
+              </span>
+            </div>
 
-          {/* LEFT Wing */}
-          <div
-            className={`absolute left-0 w-12 h-12 rounded-l-xl flex items-center justify-center transition-colors ${
-              activeDpad.left ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
-            }`}
-          >
-            <span
-              className={`text-sm font-black transition-colors ${
-                activeDpad.left ? 'text-white' : 'text-neutral-500'
+            {/* LEFT Wing */}
+            <div
+              className={`absolute left-0 w-12 h-12 rounded-l-xl flex items-center justify-center transition-colors ${
+                activeDpad.left ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
               }`}
             >
-              ◀
-            </span>
-          </div>
+              <span
+                className={`text-sm font-black transition-colors ${
+                  activeDpad.left ? 'text-white' : 'text-neutral-500'
+                }`}
+              >
+                ◀
+              </span>
+            </div>
 
-          {/* RIGHT Wing */}
-          <div
-            className={`absolute right-0 w-12 h-12 rounded-r-xl flex items-center justify-center transition-colors ${
-              activeDpad.right ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
-            }`}
-          >
-            <span
-              className={`text-sm font-black transition-colors ${
-                activeDpad.right ? 'text-white' : 'text-neutral-500'
+            {/* RIGHT Wing */}
+            <div
+              className={`absolute right-0 w-12 h-12 rounded-r-xl flex items-center justify-center transition-colors ${
+                activeDpad.right ? 'bg-indigo-600 shadow-[0_0_15px_#6366f1]' : ''
               }`}
             >
-              ▶
-            </span>
+              <span
+                className={`text-sm font-black transition-colors ${
+                  activeDpad.right ? 'text-white' : 'text-neutral-500'
+                }`}
+              >
+                ▶
+              </span>
+            </div>
+
+            {/* Center Hub Indicator */}
+            <div
+              className={`w-6 h-6 rounded-full border z-10 transition-colors ${
+                activeDpad.up || activeDpad.down || activeDpad.left || activeDpad.right
+                  ? 'bg-indigo-500 border-indigo-300 shadow-[0_0_10px_#6366f1]'
+                  : 'bg-neutral-800 border-neutral-600'
+              }`}
+            />
           </div>
 
-          {/* Center Hub Indicator */}
-          <div
-            className={`w-6 h-6 rounded-full border z-10 transition-colors ${
-              activeDpad.up || activeDpad.down || activeDpad.left || activeDpad.right
-                ? 'bg-indigo-500 border-indigo-300 shadow-[0_0_10px_#6366f1]'
-                : 'bg-neutral-800 border-neutral-600'
-            }`}
-          />
-        </div>
-
-        {/* In Landscape Mode: Center Select & Start */}
-        {!isPortrait && (
-          <div className="flex flex-col gap-2 items-center pointer-events-auto">
+          {/* In Landscape Mode: SELECT pill docked right beside D-Pad at bottom */}
+          {!isPortrait && (
             <button
               onPointerDown={(e) => handleActionDown('select', e)}
               onPointerUp={(e) => handleActionUp('select', e)}
               onPointerCancel={(e) => handleActionUp('select', e)}
-              className="px-3 py-1.5 rounded-full bg-neutral-900/80 border border-neutral-700/80 active:bg-indigo-600 text-neutral-400 active:text-white text-[9px] font-bold uppercase tracking-wider shadow-lg"
+              className={`mb-0 px-2.5 py-1 rounded-full border shadow-xl transition-all ${
+                activeActions['select']
+                  ? 'bg-indigo-600 text-white border-indigo-400 scale-95'
+                  : 'bg-neutral-900/90 text-neutral-300 border-neutral-700/80 text-[9px] font-bold uppercase tracking-wider active:bg-indigo-600'
+              }`}
+              title="Select (-)"
             >
               SELECT
             </button>
+          )}
+        </div>
+
+        {/* Right Side: in Landscape: START pill beside Action Diamond at bottom, and Action Diamond */}
+        <div className="flex items-end gap-2 pointer-events-auto">
+          {/* In Landscape Mode: START pill docked right beside Action Diamond at bottom */}
+          {!isPortrait && (
             <button
               onPointerDown={(e) => handleActionDown('start', e)}
               onPointerUp={(e) => handleActionUp('start', e)}
               onPointerCancel={(e) => handleActionUp('start', e)}
-              className="px-3 py-1.5 rounded-full bg-neutral-900/80 border border-neutral-700/80 active:bg-indigo-600 text-neutral-400 active:text-white text-[9px] font-bold uppercase tracking-wider shadow-lg"
+              className={`mb-0 px-2.5 py-1 rounded-full border shadow-xl transition-all ${
+                activeActions['start']
+                  ? 'bg-indigo-600 text-white border-indigo-400 scale-95'
+                  : 'bg-neutral-900/90 text-neutral-300 border-neutral-700/80 text-[9px] font-bold uppercase tracking-wider active:bg-indigo-600'
+              }`}
+              title="Start (+)"
             >
               START
             </button>
-          </div>
-        )}
+          )}
 
-        {/* 4-Button Action Diamond */}
-        <div className="relative w-40 h-40 flex items-center justify-center touch-none">
+          {/* 4-Button Action Diamond */}
+          <div className="relative w-40 h-40 flex items-center justify-center touch-none">
           {/* Circular Base plate */}
           <div className="absolute w-36 h-36 rounded-full bg-neutral-900/70 border border-neutral-700/70 shadow-2xl -rotate-12" />
 
@@ -529,5 +549,6 @@ export const MobileController: React.FC<MobileControllerProps> = ({
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
