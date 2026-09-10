@@ -1,8 +1,16 @@
 # Retro2K — Modern Browser-Based SNES & PS1 Retro Emulator
 
-A modern, high-performance web-based Super Nintendo (16-bit) and PlayStation 1 (32-bit) emulator built with React 19, TypeScript, Tailwind CSS, and WebAssembly cores (Snes9x & PCSX-ReARMed). Built as a proof-of-concept project with my daughter to showcase how to leverage agentic development workflows to solve real-world wants and needs.
+A modern, high-performance web-based Super Nintendo (16-bit) and PlayStation 1 (32-bit) emulator built with React 19, TypeScript, Tailwind CSS, and WebAssembly cores (Snes9x & PCSX-ReARMed). 
 
-The goal of this project is to stress test the kiro agentic steering tools to determine viability as a professional web development tool.
+The goal of this project is to stress test the kiro agentic steering tools to determine viability as a professional web development tool.  Built as a proof-of-concept project with my daughter to showcase how to leverage agentic development workflows to solve real-world wants and needs.
+
+Tool Usage:
+| Area | Tool | Description |
+| ---- | ---- | ----------- |
+| UI/UX | Gemini 3.8 Flash (High) | Figma mockup -> Plan -> Skeleton |
+| Core Emulation & State | Kiro w/ Custom Steering (GPT-5.6 Sol High / GPT-5.6 Luna Max)  | Debugging & Logic |
+| Integration/Refactor | Kiro w/ Custom Steering (GPT-5.6 Sol High / GPT-5.6 Luna Max)  | Integrate features |
+| Iterative Enhancements | Gemini 3.8 Flash (High) / Kiro w/ Custom Steering (GPT-5.6 Sol High / GPT-5.6 Luna Max)  | Add features |
 
 > [!IMPORTANT]
 > **Legal Notice**: Retro2K is strictly an open-source emulation tool and frontend. It does not distribute, host, or contain any proprietary commercial game ROMs or disc images. Users must provide their own legally acquired backups. All preloaded demo titles are 100% freeware/homebrew games distributed with permission.
